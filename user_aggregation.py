@@ -81,12 +81,13 @@ def count_users_hotspots(users_hotspots: pd.DataFrame) -> pd.DataFrame:
 
     Returns:
         pd.DataFrame: Returns aggregated values user-amount of hotspots created
-    """    
+    """
     return (
         users_hotspots.groupby("user", as_index=False)
         .agg({"id": "count"})
         .sort_values("id", ascending=False)
         .rename(columns={"id": "count"})
+        .reset_index(drop=True)
     )
 
 
@@ -98,7 +99,7 @@ def count_users_hotspots_geo(users_hotspots: pd.DataFrame) -> pd.DataFrame:
 
     Returns:
         pd.DataFrame: Returns aggregated values user-amount of hotspots created
-    """    
+    """
     return (
         users_hotspots[
             users_hotspots.foursquare_id.notnull()
@@ -108,6 +109,7 @@ def count_users_hotspots_geo(users_hotspots: pd.DataFrame) -> pd.DataFrame:
         .agg({"id": "count"})
         .sort_values("id", ascending=False)
         .rename(columns={"id": "count"})
+        .reset_index(drop=True)
     )
 
 
@@ -139,6 +141,7 @@ def count_users_hotspots_over_time(users_hotspots: pd.DataFrame) -> List[pd.Data
             .agg({"id": "count"})
             .sort_values("id", ascending=False)
             .rename(columns={"id": "count"})
+            .reset_index(drop=True)
         )
 
     return result
@@ -152,7 +155,7 @@ def count_users_hotspots_score(users_hotspots: pd.DataFrame) -> pd.DataFrame:
 
     Returns:
         pd.DataFrame: Returns aggregated values user-amount of hotspots created
-    """    
+    """
     users_hotspots["good_hs"] = np.where(users_hotspots.score_v4 > 0.6, 1, 0)
     users_hotspots["avg_hs"] = np.where(
         (users_hotspots.score_v4 < 0.6) & (users_hotspots.score_v4 > 0.3), 1, 0
@@ -163,13 +166,14 @@ def count_users_hotspots_score(users_hotspots: pd.DataFrame) -> pd.DataFrame:
         users_hotspots.groupby("user", as_index=False)
         .agg({"good_hs": "sum", "avg_hs": "sum", "bad_hs": "sum"})
         .sort_values(by=["good_hs", "avg_hs", "bad_hs"], ascending=False)
+        .reset_index(drop=True)
     )
 
 
 def count_users_unique_hotspots(
     users_conns: pd.DataFrame, users_hotspots: pd.DataFrame
 ) -> List[pd.DataFrame]:
-    """count how many hotspots the user has to which there were more
+    """Count how many hotspots the user has to which there were more
     than 1, 5 and 10 unique connections during various time periods
 
     Args:
@@ -218,6 +222,7 @@ def count_users_unique_hotspots(
             .sort_values(
                 by=["more_1_conns", "more_5_conns", "more_10_conns"], ascending=False
             )
+            .reset_index(drop=True)
         )
 
     return result
