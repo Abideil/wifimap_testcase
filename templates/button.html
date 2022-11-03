@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+
+{% for table in tables %}
+            <h1></h1>
+            <h2>{{titles[loop.index0]}}</h2>
+            {{ table|safe }}
+            <section>
+                {% if plot_url is sequence and plot_url is not mapping and plot_url is not string  -%}
+                    <h4>Dataframe visualisation</h4>
+                    <img src="data:image/png;base64, {{ plot_url[loop.index0] }}">
+                {%- endif %}
+                {% if plot_url is string  -%}
+                    <h4>Dataframe visualisation</h4>
+                    <img src="data:image/png;base64, {{ plot_url }}">
+                {%- endif %}
+            </section>
+{% endfor %}
+</body>
+</html>
