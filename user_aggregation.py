@@ -1,8 +1,13 @@
+import base64
+import matplotlib
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from io import BytesIO
 from datetime import date, timedelta
-from typing import Tuple, List
+from typing import Tuple, List, Union
+
+matplotlib.use("Agg")
 
 
 def data_download() -> Tuple[pd.DataFrame]:
@@ -71,6 +76,45 @@ def merge_datasets(
     users_conns = users_hotspots.merge(conns, left_on="id", right_on="hotspot_id")
 
     return users_hotspots, users_conns
+
+
+def df_visualisation(
+    dfs: Union[pd.DataFrame, list[pd.DataFrame]]
+) -> Union[str, list[str]]:
+    """Visualise dataframes
+
+    Args:
+        dfs (Union[pd.DataFrame, list[pd.DataFrame]]): slice of dataframe or list of dataframe slices
+
+    Returns:
+        Union[str, list[str]]: Returns str or list of str, which will be displayed as an image on the page
+    """
+    if isinstance(dfs, pd.DataFrame):
+        img = BytesIO()
+        dfs.plot(x="user", kind="bar")
+        plt.minorticks_on()
+        plt.grid(which="major", linestyle="-", linewidth="0.5", color="green")
+        plt.grid(which="minor", linestyle=":", linewidth="0.5", color="black")
+        plt.savefig(img, format="png")
+        plt.close()
+        img.seek(0)
+        plot_url = base64.b64encode(img.getvalue()).decode("utf8")
+    else:
+        plot_url = list()
+        for df in dfs:
+            if not df.empty:
+                img = BytesIO()
+                df.plot(kind="bar")
+                plt.minorticks_on()
+                plt.grid(which="major", linestyle="-", linewidth="0.5", color="green")
+                plt.grid(which="minor", linestyle=":", linewidth="0.5", color="black")
+                plt.savefig(img, format="png")
+                plt.close()
+                img.seek(0)
+                plot_url.append(base64.b64encode(img.getvalue()).decode("utf8"))
+            else:
+                plot_url.append("")
+    return plot_url
 
 
 def count_users_hotspots(users_hotspots: pd.DataFrame) -> pd.DataFrame:

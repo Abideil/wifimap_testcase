@@ -1,33 +1,24 @@
 <!doctype html>
 <html>
 
+
 <head>
     <title>Wifi map test case</title>
 
     <h2>Buttons for calling data aggregation</h2>  
-
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"> </script>
-    <script type=text/javascript> $(function() { $("#mybutton1").click(function (event) { $.getJSON('/button1', { },
-    function(data) { }); return false; }); }); </script> 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"> </script>
-    <script type=text/javascript> $(function() { $("#mybutton2").click(function (event) { $.getJSON('/button2', { },
-    function(data) { }); return false; }); }); </script> 
-    <script type=text/javascript> $(function() { $("#mybutton3").click(function (event) { $.getJSON('/button3', { },
-    function(data) { }); return false; }); }); </script> 
-    <script type=text/javascript> $(function() { $("#mybutton4").click(function (event) { $.getJSON('/button4', { },
-    function(data) { }); return false; }); }); </script> 
-    <script type=text/javascript> $(function() { $("#mybutton5").click(function (event) { $.getJSON('/button5', { },
-    function(data) { }); return false; }); }); </script> 
 </head>
 
-<body>        
-        <input type = "button" id = "mybutton1" value = "Button 1" />
-        <input type = "button" id = "mybutton2" value = "Button 2" />
-        <input type = "button" id = "mybutton3" value = "Button 3" />
-        <input type = "button" id = "mybutton4" value = "Button 4" />
-        <input type = "button" id = "mybutton5" value = "Button 5" />
-
-</body>    
+<body>
+    <div class="column">
+        <div class="large-12 text-center columns">
+            <button onclick="location.href='/button1'" type="button">Button 1</button>
+            <button onclick="location.href='/button2'" type="button">Button 2</button>
+            <button onclick="location.href='/button3'" type="button">Button 3</button>
+            <button onclick="location.href='/button4'" type="button">Button 4</button>
+            <button onclick="location.href='/button5'" type="button">Button 5</button>            
+        </div>
+    </div>
+</body>
 
 <body>        
     <h5>Button 1 - Count wifi hotspots created by user</h5>  
